@@ -1,0 +1,5 @@
+kivy
+soundcard
+numpy
+scipy
+

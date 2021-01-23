@@ -1,0 +1,81 @@
+#:kivy 1.11.1
+
+<TTSDatasetRecorderWidget>:
+    Label:
+        id: SentenceLabel
+        font_size: 60
+        top: root.top * .75
+        text: root.sentence
+        width: root.width
+        padding_x: 20
+        text_size: root.width, None
+        size: self.texture_size
+        halign: "center"
+    Label:
+        font_size: 20
+        center_x: root.width * .5
+        center_y: root.top * .3
+        height: root.top * .05
+        text: root.recording_indicator
+    Button:
+        id: record_button
+        font_size: 20
+        center_x: root.width / 2
+        center_y: root.top * .25
+        height: root.top * .05
+        text: "Record"
+        on_release: root.record_button()
+    Label:
+        font_size: 20
+        center_x: root.width * .8
+        center_y: root.top * .1
+        height: 40
+        width: 30
+        text: root.progress_label
+    Label:
+        font_size: 20
+        center_x: root.width * .1
+        center_y: root.top * .1
+        height: 40
+        width: 30
+        text: "Go to sentence:"
+    TextInput:
+        id: goto_text_input
+        font_size: 20
+        center_x: (root.width * .1) + 120
+        center_y: root.top * .1
+        height: 40
+        width: 60
+        multiline: False
+        text: root.progress_goto
+        input_type: "number"
+        on_text_validate: root.on_text_enter(self.text)
+    Button:
+        center_x: root.width *.1
+        center_y: root.top *.1 + 60
+        height: 50
+        width: 120
+        text: "Prev"
+        on_release: root.prev_button()
+    Button:
+        center_x: root.width *.1 + 150
+        center_y: root.top *.1 + 60
+        height: 50
+        width: 120
+        text: "Next"
+        on_release: root.load_next_sentence()
+    Slider:
+        id: reading_speed_slider
+        min: 50
+        max: 200
+        step: 25
+        orientation: 'horizontal'
+        center_x: root.width * .5
+        center_y: root.height * .1
+        on_value: root.change_reading_speed(self.value)
+        value: root.reading_speed
+    Label:
+        font_size: 20
+        center_x: root.width * .5
+        center_y: root.height * .05
+        text: root.reading_speed_text
