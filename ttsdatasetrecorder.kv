@@ -9,8 +9,26 @@
         width: root.width
         padding_x: 20
         text_size: root.width, None
-        size: self.texture_size
+        #size: self.texture_size
         halign: "center"
+    TextInput:
+        id: SentenceTextInput
+        font_size: 60
+        top: root.top * .75
+        text: root.sentence
+        width: 0
+        padding_x: 20
+        text_size: root.width, None
+        halign: "center"
+        opacity: 0.
+    Button:
+        id: EditTextButton
+        font_size: 20
+        center_x: root.width / 2
+        center_y: root.top * .35
+        height: root.top * .05
+        text: root.edit_text_button_text
+        on_release: root.toggle_text_input()
     Label:
         font_size: 20
         center_x: root.width * .5
@@ -49,7 +67,7 @@
         multiline: False
         text: root.progress_goto
         input_type: "number"
-        on_text_validate: root.on_text_enter(self.text)
+        on_text_validate: root.on_goto_line_text_enter(self.text)
     Button:
         center_x: root.width *.1
         center_y: root.top *.1 + 60

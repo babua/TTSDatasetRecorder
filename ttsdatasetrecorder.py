@@ -29,6 +29,7 @@ class TTSDatasetRecorderWidget(Widget):
 	recording_indicator = StringProperty()
 	reading_speed_text = StringProperty()
 	reading_speed = NumericProperty()
+	edit_text_button_text = StringProperty()
 	second_per_char = SECOND_PER_CHAR
 
 	
@@ -46,6 +47,9 @@ class TTSDatasetRecorderWidget(Widget):
 		self.load_next_sentence()
 		self.reading_speed = 100
 		self.mic = sc.default_microphone()
+		self.edit_text = False
+		self.edit_text_button_text = "Edit Text"
+		self.tmpSentence = ""
 
 	def record_button(self):
 		time_allowance = len(self.sentence) * self.second_per_char
@@ -89,7 +93,7 @@ class TTSDatasetRecorderWidget(Widget):
 	def update_progress_textinput(self,*largs):
 		self.progress_goto = f"{self.line_index+1}"
 
-	def on_text_enter(self,text):
+	def on_goto_line_text_enter(self,text):
 		try:
 			inp = int(text)-2
 			if inp < -1:
@@ -110,6 +114,31 @@ class TTSDatasetRecorderWidget(Widget):
 		self.reading_speed_text = f"Reading speed: %{self.reading_speed}"
 		print(self.second_per_char)
 
+	def toggle_text_input(self):
+		app = App.get_running_app()
+		
+		if self.edit_text:
+			self.ids["SentenceLabel"].width = app.root.width
+			self.ids["SentenceLabel"].opacity = 1.
+			self.ids["SentenceTextInput"].width = 0
+			self.ids["SentenceTextInput"].opacity = 0.
+			self.edit_text = False
+			self.edit_text_button_text = "Edit Text"
+			self.ids["SentenceTextInput"].text = self.ids["SentenceTextInput"].text.strip()
+			if self.ids["SentenceTextInput"].text != self.sentence:
+				self.sentence = self.ids["SentenceTextInput"].text
+				self.lines[self.line_index] = self.sentence
+				with open(self.book_file, "w", encoding="utf-8") as f:
+					tmp_lines = [ x.strip()+"\n" for x in self.lines]
+					f.writelines(tmp_lines)
+
+		else:
+			self.ids["SentenceLabel"].width = 0
+			self.ids["SentenceLabel"].opacity = 0.
+			self.ids["SentenceTextInput"].width = app.root.width
+			self.ids["SentenceTextInput"].opacity = 1.
+			self.edit_text = True
+			self.edit_text_button_text = "Save Text"
 
 
 class TTSDatasetRecorderApp(App):
