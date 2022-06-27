@@ -66,9 +66,11 @@ class TTSDatasetRecorderWidget(Widget):
 		self.ids.goto_text_input.disabled = True
 
 		recording = self.mic.record(samplerate=self.fs, numframes=int(time_allowance * self.fs),channels=1)
-		recording = recording / numpy.max(numpy.abs(recording))
-
-		wavwrite(out_path, self.fs, recording)  # Save as WAV file
+		max_volume = numpy.max(numpy.abs(recording))
+		if max_volume != 0:
+			recording = recording / max_volume
+			wavwrite(out_path, self.fs, recording)  # Save as WAV file
+		
 		self.recording_indicator = ""
 		self.ids.record_button.disabled = False
 		self.ids.reading_speed_slider.disabled = False
