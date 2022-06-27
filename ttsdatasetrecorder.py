@@ -5,7 +5,7 @@ import kivy
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.properties import StringProperty, NumericProperty
-from kivy.clock import Clock
+from kivy.clock import Clock, mainthread
 from kivy.uix.label import Label
 from kivy.core.text import FontContextManager as FCM
 
@@ -80,7 +80,7 @@ class TTSDatasetRecorderWidget(Widget):
 		self.line_index -= 2
 		self.load_next_sentence()
 	
-
+	@mainthread
 	def load_next_sentence(self):
 		self.line_index += 1
 		if self.line_index >= len(self.lines):
