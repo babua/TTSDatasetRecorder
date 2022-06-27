@@ -70,8 +70,9 @@ class TTSDatasetRecorderWidget(Widget):
 		if max_volume != 0:
 			recording = recording / max_volume
 			wavwrite(out_path, self.fs, recording)  # Save as WAV file
-		
-		self.recording_indicator = ""
+			self.recording_indicator = ""
+		else:
+			self.recording_indicator = "Nothing recorded. Check your microphone."
 		self.ids.record_button.disabled = False
 		self.ids.reading_speed_slider.disabled = False
 		self.ids.goto_text_input.disabled = False
